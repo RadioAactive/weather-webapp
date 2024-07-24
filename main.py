@@ -13,7 +13,7 @@ box = st.selectbox("Select data to view"
 
 
 
-try:    
+try:
     data = fns.weather_API(u_input,slider)
     if box == "Temperature":
         st.subheader(f"Temperature for the next {slider}\
@@ -23,5 +23,11 @@ try:
         graph = px.line(None , date , temp
                         , labels={"x":"Date/Time","y":"Temps"})
         st.plotly_chart(graph)
+    if box == "Sky":
+        sky_cond = [weather["weather"][0]["main"] for weather in data]
+        images = {"Clear":"images/clear.png","Clouds":"images/cloud.png"
+                      ,"Rain":"images/rain.png","Snow":"images/snow.png"}
+        image_gen = [images[condition] for condition in sky_cond]
+        st.image(image_gen , width=120)
 except:
     st.subheader("No Input")
